@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.snapqr.ui.homescreen.HomeNav
+import uk.ac.tees.mad.snapqr.ui.homescreen.HomeScreen
 import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashNav
 import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashScreen
 
@@ -17,6 +18,9 @@ fun SnapQRNav() {
             SplashScreen(navigateBack = {
                 navController.navigate(HomeNav.route)
             })
+        }
+        composable(route = HomeNav.route) {
+            HomeScreen()
         }
     }
 }

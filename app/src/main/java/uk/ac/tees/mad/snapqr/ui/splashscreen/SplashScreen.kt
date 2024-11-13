@@ -41,22 +41,32 @@ fun SplashScreen(navigateBack: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // App Logo
+        Spacer(modifier = Modifier.weight(1f))
+
         Image(
             painter = painterResource(id = R.drawable.snapqr_logo),
             contentDescription = "App Logo",
-            modifier = Modifier.size(150.dp)
+            modifier = Modifier
+                .size(150.dp)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
 
-        // App Name or Message
-        Text(
-            text = "Welcome to SnapQR",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
+        Spacer(modifier = Modifier.weight(1f))
+        Row {
+
+            Text(
+                text = "Welcome to ",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+            Text(
+                text = "SnapQR",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -65,6 +75,7 @@ fun SplashScreen(navigateBack: () -> Unit) {
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.primary
         )
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
