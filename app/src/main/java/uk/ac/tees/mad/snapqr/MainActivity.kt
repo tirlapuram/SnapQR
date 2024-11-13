@@ -10,6 +10,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.snapqr.ui.theme.SnapQRTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +26,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun SnapQRNav() {
-    val navController = ""
-}
