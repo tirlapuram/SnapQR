@@ -44,7 +44,7 @@ fun SplashScreen(navigateBack: () -> Unit) {
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = painterResource(id = R.drawable.snapqr_logo),
+            painter = painterResource(id = R.drawable.qr_code_scan),
             contentDescription = "App Logo",
             modifier = Modifier
                 .size(150.dp)

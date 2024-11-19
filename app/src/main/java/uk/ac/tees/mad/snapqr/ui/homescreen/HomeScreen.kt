@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import uk.ac.tees.mad.snapqr.R
 import uk.ac.tees.mad.snapqr.SnapNav
+import uk.ac.tees.mad.snapqr.ui.scanqr.ScanNav
 
 object HomeNav : SnapNav {
     override val route: String = "home"
@@ -65,7 +66,7 @@ fun HomeScreen(navController: NavHostController) {
         ) {
             Spacer(modifier = Modifier.height(12.dp))
             ElevatedCard(
-                onClick = {},
+                onClick = { navController.navigate(ScanNav.route) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
                 elevation = CardDefaults.elevatedCardElevation(4.dp)
