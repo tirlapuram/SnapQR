@@ -20,7 +20,7 @@ fun SnapQRNav() {
             })
         }
         composable(route = HomeNav.route) {
-            HomeScreen()
+            HomeScreen(navController)
         }
     }
 }
