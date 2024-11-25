@@ -215,6 +215,7 @@ private fun processImage(
                         viewModel.updateState(qrType = "Text", qrContent = barcode.rawValue ?: "")
                     }
                 }
+
                 // Trigger vibration
                 val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java)
                 vibrator?.vibrate(

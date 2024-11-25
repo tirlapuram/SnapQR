@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -86,4 +87,14 @@ dependencies {
     implementation ("androidx.navigation:navigation-compose:2.8.0")
     implementation ("io.coil-kt:coil-compose:2.7.0")
     implementation ("androidx.compose.material:material-icons-extended:1.7.0")
+
+    // Room for local caching
+    implementation("androidx.room:room-runtime:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    // Firebase Authentication
+    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
 }
