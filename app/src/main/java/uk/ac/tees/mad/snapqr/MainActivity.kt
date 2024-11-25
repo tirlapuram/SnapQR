@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import uk.ac.tees.mad.snapqr.ui.theme.SnapQRTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
