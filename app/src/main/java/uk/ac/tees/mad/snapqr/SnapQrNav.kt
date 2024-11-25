@@ -1,13 +1,17 @@
 package uk.ac.tees.mad.snapqr
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.snapqr.ui.homescreen.HomeNav
 import uk.ac.tees.mad.snapqr.ui.homescreen.HomeScreen
+import uk.ac.tees.mad.snapqr.ui.scandetails.ScanDetailNav
+import uk.ac.tees.mad.snapqr.ui.scandetails.ScanDetailsScreen
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanNav
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRScreen
+import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRViewModel
 import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashNav
 import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashScreen
 
@@ -15,6 +19,7 @@ import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashScreen
 @Composable
 fun SnapQRNav() {
     val navController = rememberNavController()
+    val scanQRViewModel: ScanQRViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = SplashNav.route) {
         composable(route = SplashNav.route) {
             SplashScreen(navigateBack = {
@@ -25,7 +30,11 @@ fun SnapQRNav() {
             HomeScreen(navController)
         }
         composable(route = ScanNav.route) {
-            ScanQRScreen(navController = navController)
+            ScanQRScreen(navController = navController, scanQRViewModel = scanQRViewModel)
+        }
+
+        composable(ScanDetailNav.route) {
+            ScanDetailsScreen(navController = navController, scanQRViewModel = scanQRViewModel)
         }
     }
 }

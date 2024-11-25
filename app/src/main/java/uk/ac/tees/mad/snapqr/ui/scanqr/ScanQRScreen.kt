@@ -59,6 +59,7 @@ import uk.ac.tees.mad.snapqr.CAMERA_PERMISSION
 import uk.ac.tees.mad.snapqr.SnapNav
 import uk.ac.tees.mad.snapqr.cameraPermissionRequest
 import uk.ac.tees.mad.snapqr.openPermissionSetting
+import uk.ac.tees.mad.snapqr.ui.scandetails.ScanDetailNav
 import java.util.concurrent.Executors
 
 object ScanNav : SnapNav {
@@ -70,7 +71,7 @@ object ScanNav : SnapNav {
 @Composable
 fun ScanQRScreen(
     navController: NavHostController,
-    scanQRViewModel: ScanQRViewModel = hiltViewModel(),
+    scanQRViewModel: ScanQRViewModel,
     cameraXViewModel: CameraXViewModel = hiltViewModel()
 ) {
 
@@ -138,7 +139,9 @@ fun ScanQRScreen(
                             val barcodeScanner = BarcodeScanning.getClient()
                             val imageAnalysis = ImageAnalysis.Builder().build()
                             imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor()) { imageProxy ->
-                                processImage(scanQRViewModel, barcodeScanner, imageProxy)
+                                processImage(scanQRViewModel, barcodeScanner, imageProxy, context) {
+                                    navController.navigate(ScanDetailNav.route)
+                                }
                             }
 
                             cameraProvider?.bindToLifecycle(
