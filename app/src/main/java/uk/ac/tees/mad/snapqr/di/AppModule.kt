@@ -3,6 +3,9 @@ package uk.ac.tees.mad.snapqr.di
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,4 +28,12 @@ object AppModule {
     @Provides
     @Singleton
     fun providesDao(db: AppDatabase): ScanHistoryDao = db.scanHistoryDao()
+
+    @Provides
+    @Singleton
+    fun providesAuth() = Firebase.auth
+
+    @Provides
+    @Singleton
+    fun providesFirestore() = Firebase.firestore
 }

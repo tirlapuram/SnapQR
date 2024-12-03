@@ -2,6 +2,7 @@ package uk.ac.tees.mad.snapqr.ui.scandetails
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,8 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,8 +46,9 @@ fun ScanDetailsScreen(
 ) {
     val state = scanQRViewModel.state.collectAsState().value
     val qrType = state.qrType
-    var qrContent = state.qrContent
+    val qrContent = state.qrContent
     val context = LocalContext.current
+    val isLoading = scanQRViewModel.isLoading.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -64,8 +68,9 @@ fun ScanDetailsScreen(
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            Text(text = "QR Type: ${state.qrType}", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(text = "QR Type: $qrType", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(8.dp))
+
             if (qrType == "URL") {
                 TextButton(onClick = {
                     if (!qrContent.startsWith("http://") && !qrContent.startsWith("https://")) {
@@ -77,16 +82,35 @@ fun ScanDetailsScreen(
                     Text(text = qrContent, fontSize = 18.sp)
                 }
             } else {
-                Text(text = "QR Content: ${state.qrContent}", fontSize = 16.sp)
+                Text(text = "QR Content: $qrContent", fontSize = 16.sp)
             }
+
             Spacer(modifier = Modifier.height(16.dp))
 
-
             Button(
-                onClick = { },
+                onClick = {
+                    scanQRViewModel.addScanToFavorites(
+                        qrType = qrType,
+                        qrContent = qrContent,
+                        onSuccess = {
+                            Toast.makeText(context, "Added to favorites!", Toast.LENGTH_SHORT)
+                                .show()
+                        },
+                        onFailure = { exception ->
+                            Toast.makeText(
+                                context,
+                                "Failed to add to favorites: ${exception.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Add to Favorite")
+            }
+            if (isLoading) {
+                LinearProgressIndicator(strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap)
             }
         }
     }
