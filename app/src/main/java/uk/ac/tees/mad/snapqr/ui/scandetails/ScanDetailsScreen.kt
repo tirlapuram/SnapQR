@@ -51,7 +51,7 @@ fun ScanDetailsScreen(
             CenterAlignedTopAppBar(
                 title = { Text("Scan Details") },
                 navigationIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }
@@ -81,20 +81,12 @@ fun ScanDetailsScreen(
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = { },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Save Scan")
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = { },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Favorite")
+                Text("Add to Favorite")
             }
         }
     }

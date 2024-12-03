@@ -28,9 +28,6 @@ class ScanQRViewModel @Inject constructor(
         _state.update {
             it.copy(qrType = qrType, qrContent = qrContent)
         }
-    }
-
-    fun addScanHistory(qrContent: String, qrType: String) {
         viewModelScope.launch {
             val scanHistory = ScanHistory(
                 qrContent = qrContent,

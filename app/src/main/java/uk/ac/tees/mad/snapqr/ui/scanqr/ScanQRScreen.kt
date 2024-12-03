@@ -2,8 +2,6 @@ package uk.ac.tees.mad.snapqr.ui.scanqr
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
@@ -15,37 +13,22 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -76,16 +59,11 @@ fun ScanQRScreen(
 ) {
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    val state = scanQRViewModel.state.collectAsState().value
-    val qrType = state.qrType
-    var qrContent = state.qrContent
     val context = LocalContext.current
 
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
 
-            }
         }
 
     LaunchedEffect(Unit) {
@@ -153,36 +131,6 @@ fun ScanQRScreen(
                 },
                 modifier = Modifier.fillMaxSize()
             )
-
-            AnimatedVisibility(
-                visible = qrType.isNotEmpty(),
-                modifier = Modifier.align(Alignment.BottomCenter)
-            ) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter),
-                    elevation = CardDefaults.cardElevation(4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = "QR Type: $qrType", fontSize = 18.sp)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        if (qrType == "URL") {
-                            TextButton(onClick = {
-                                if (!qrContent.startsWith("http://") && !qrContent.startsWith("https://")) {
-                                    qrContent = "http://$qrContent"
-                                }
-                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(qrContent))
-                                context.startActivity(browserIntent)
-                            }) {
-                                Text(text = qrContent, fontSize = 18.sp)
-                            }
-                        } else {
-                            Text(text = qrContent, fontSize = 18.sp)
-                        }
-                    }
-                }
-            }
         }
     }
 }
