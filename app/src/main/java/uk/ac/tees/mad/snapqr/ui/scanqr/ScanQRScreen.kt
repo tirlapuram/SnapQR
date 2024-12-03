@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.snapqr.ui.scanqr
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.os.VibrationEffect
@@ -10,6 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
@@ -30,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -157,10 +165,20 @@ private fun processImage(
                             qrType = "URL",
                             qrContent = barcode.url?.url.toString()
                         )
+                        showNotification(
+                            context,
+                            "QR Scan Successful",
+                            "Scan content: ${barcode.url?.url}"
+                        )
                     }
 
                     else -> {
                         viewModel.updateState(qrType = "Text", qrContent = barcode.rawValue ?: "")
+                        showNotification(
+                            context,
+                            "QR Scan Successful",
+                            "Scan content: ${barcode.rawValue}"
+                        )
                     }
                 }
 
@@ -176,7 +194,47 @@ private fun processImage(
                 onScanSuccess()
             }
         }
+        .addOnFailureListener {
+            showNotification(context, "QR Scan Failed", "Failed to read the QR code.")
+        }
         .addOnCompleteListener {
             imageProxy.close()
         }
+}
+
+fun showNotification(context: Context, title: String, message: String) {
+    val channelId = "QR_SCAN_CHANNEL"
+
+    val channel = NotificationChannel(
+        channelId, "QR Scan Notifications",
+        NotificationManager.IMPORTANCE_DEFAULT
+    ).apply {
+        description = "Notifications for QR code scans"
+    }
+    val notificationManager: NotificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    notificationManager.createNotificationChannel(channel)
+
+    val notification = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(android.R.drawable.ic_dialog_info)
+        .setContentTitle(title)
+        .setContentText(message)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .build()
+
+    if (ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
+        }
+        return
+    }
+    NotificationManagerCompat.from(context).notify(1001, notification)
 }
