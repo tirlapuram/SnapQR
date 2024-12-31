@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -31,11 +32,14 @@ class ScanQRViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
+    private val _scans = MutableStateFlow<List<ScanHistory>>(emptyList())
+    val scans = _scans.asStateFlow()
+
     fun updateState(qrType: String, qrContent: String) {
         _state.update {
             it.copy(qrType = qrType, qrContent = qrContent)
         }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val scanHistory = ScanHistory(
                 qrContent = qrContent,
                 qrType = qrType,
@@ -51,7 +55,7 @@ class ScanQRViewModel @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
             val currentUser = auth.currentUser
             if (currentUser != null) {
@@ -76,6 +80,19 @@ class ScanQRViewModel @Inject constructor(
             } else {
                 onFailure(Exception("User not authenticated"))
             }
+        }
+    }
+
+    fun loadScans() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _scans.value = dao.getAllScans()
+        }
+    }
+
+    fun deleteScan(scanId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.deleteScanById(scanId)
+            loadScans()
         }
     }
 }

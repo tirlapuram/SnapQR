@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import uk.ac.tees.mad.snapqr.SnapNav
+import uk.ac.tees.mad.snapqr.ui.homescreen.HomeNav
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRViewModel
 
 object ScanDetailNav : SnapNav {
@@ -93,6 +94,11 @@ fun ScanDetailsScreen(
                         qrType = qrType,
                         qrContent = qrContent,
                         onSuccess = {
+                            navController.navigate(HomeNav.route) {
+                                popUpTo(HomeNav.route) {
+                                    inclusive = true
+                                }
+                            }
                             Toast.makeText(context, "Added to favorites!", Toast.LENGTH_SHORT)
                                 .show()
                         },
