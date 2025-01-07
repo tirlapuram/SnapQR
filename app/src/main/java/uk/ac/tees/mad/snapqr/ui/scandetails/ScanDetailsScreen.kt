@@ -125,8 +125,7 @@ fun ScanDetailsScreen(
                                         context,
                                         "Added to favorites!",
                                         Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                                    ).show()
                                 }
 
                             },

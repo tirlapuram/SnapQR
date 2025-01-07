@@ -21,6 +21,8 @@ import uk.ac.tees.mad.snapqr.ui.scanhistory.ScanHistoryScreen
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanNav
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRScreen
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRViewModel
+import uk.ac.tees.mad.snapqr.ui.settingscreen.SettingsNav
+import uk.ac.tees.mad.snapqr.ui.settingscreen.SettingsScreen
 import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashNav
 import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashScreen
 
@@ -68,6 +70,10 @@ fun SnapQRNav() {
 
         composable(FavoriteNav.route) {
             FavoriteScansScreen(navController = navController)
+        }
+
+        composable(SettingsNav.route) {
+            SettingsScreen(navController = navController, scanQRViewModel = scanQRViewModel)
         }
     }
 }

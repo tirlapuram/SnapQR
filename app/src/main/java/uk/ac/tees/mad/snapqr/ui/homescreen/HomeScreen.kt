@@ -36,6 +36,7 @@ import uk.ac.tees.mad.snapqr.SnapNav
 import uk.ac.tees.mad.snapqr.ui.favoritescan.FavoriteNav
 import uk.ac.tees.mad.snapqr.ui.scanhistory.ScanHistoryNav
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanNav
+import uk.ac.tees.mad.snapqr.ui.settingscreen.SettingsNav
 
 object HomeNav : SnapNav {
     override val route: String = "home"
@@ -156,6 +157,7 @@ fun HomeScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
             ElevatedCard(
+                onClick = { navController.navigate(SettingsNav.route) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
                 elevation = CardDefaults.elevatedCardElevation(4.dp)

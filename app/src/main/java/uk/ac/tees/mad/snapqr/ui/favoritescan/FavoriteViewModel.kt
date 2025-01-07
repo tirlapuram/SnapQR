@@ -54,6 +54,7 @@ class FavoriteViewModel @Inject constructor() : ViewModel() {
 
     fun removeFavoriteScan(scanId: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.value = true
             val currentUser = auth.currentUser
             if (currentUser != null) {
                 firestore.collection("users")

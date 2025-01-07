@@ -100,4 +100,15 @@ class ScanQRViewModel @Inject constructor(
             loadScans()
         }
     }
+
+    fun clearScanHistory(onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                dao.deleteAllScans()
+                onSuccess()
+            } catch (ex: Exception) {
+                onFailure(ex.message ?: "Something went wrong")
+            }
+        }
+    }
 }
