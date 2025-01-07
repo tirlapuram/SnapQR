@@ -20,6 +20,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,9 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import uk.ac.tees.mad.snapqr.R
 import uk.ac.tees.mad.snapqr.SnapNav
 import uk.ac.tees.mad.snapqr.ui.favoritescan.FavoriteNav
+import uk.ac.tees.mad.snapqr.ui.scandetails.LoginDialog
 import uk.ac.tees.mad.snapqr.ui.scanhistory.ScanHistoryNav
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanNav
 import uk.ac.tees.mad.snapqr.ui.settingscreen.SettingsNav
@@ -45,6 +52,7 @@ object HomeNav : SnapNav {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavHostController) {
+    var showLoginDialog by remember { mutableStateOf(false) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -98,7 +106,11 @@ fun HomeScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(16.dp))
             ElevatedCard(
                 onClick = {
-                    navController.navigate(FavoriteNav.route)
+                    if (Firebase.auth.currentUser == null) {
+                        showLoginDialog = true
+                    } else {
+                        navController.navigate(FavoriteNav.route)
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
@@ -182,6 +194,14 @@ fun HomeScreen(navController: NavHostController) {
                     }
                 }
             }
+        }
+        if (showLoginDialog) {
+            LoginDialog(
+                onDismiss = { showLoginDialog = false },
+                onLoginClick = {
+                    navController.navigate("login?fromFavoriteScreen=false")
+                }
+            )
         }
     }
 }

@@ -28,9 +28,10 @@ import uk.ac.tees.mad.snapqr.ui.splashscreen.SplashScreen
 
 
 @Composable
-fun SnapQRNav() {
+fun SnapQRNav(scanType: String?, message: String?) {
     val navController = rememberNavController()
     val scanQRViewModel: ScanQRViewModel = hiltViewModel()
+
     NavHost(navController = navController, startDestination = SplashNav.route) {
         composable(route = SplashNav.route) {
             SplashScreen(navigateBack = {
@@ -75,6 +76,10 @@ fun SnapQRNav() {
         composable(SettingsNav.route) {
             SettingsScreen(navController = navController, scanQRViewModel = scanQRViewModel)
         }
+    }
+    if (scanType != null && message != null) {
+        scanQRViewModel.updateState(scanType, message, false)
+        navController.navigate(ScanDetailNav.route)
     }
 }
 

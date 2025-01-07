@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.snapqr
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,8 +23,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val scanType = intent.getStringExtra("scanType")
+            val message = intent.getStringExtra("scanContent")?.substringAfterLast(":")
+            Log.d("TAG", "$scanType, $message")
             SnapQRTheme {
-                SnapQRNav()
+                SnapQRNav(scanType, message)
             }
         }
     }
