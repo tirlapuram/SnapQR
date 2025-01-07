@@ -22,10 +22,12 @@ data class ScanState(
 
 @HiltViewModel
 class ScanQRViewModel @Inject constructor(
-    private val dao: ScanHistoryDao,
-    private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val dao: ScanHistoryDao
 ) : ViewModel() {
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+
     private val _state = MutableStateFlow(ScanState())
     val state = _state.asStateFlow()
 

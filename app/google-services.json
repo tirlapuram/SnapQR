@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "168832194598",
+    "project_id": "snapqr-c5b6b",
+    "storage_bucket": "snapqr-c5b6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168832194598:android:3642999fac2d750e3ceee7",
+        "android_client_info": {
+          "package_name": "uk.ac.tees.mad.snapqr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyiC9Q6wPhUMeVjyp_R_XVqPHiawZmlEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

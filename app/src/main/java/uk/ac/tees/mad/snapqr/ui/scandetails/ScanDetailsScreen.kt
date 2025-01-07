@@ -56,7 +56,13 @@ fun ScanDetailsScreen(
             CenterAlignedTopAppBar(
                 title = { Text("Scan Details") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        navController.navigate(HomeNav.route) {
+                            popUpTo(HomeNav.route) {
+                                inclusive = true
+                            }
+                        }
+                    }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }

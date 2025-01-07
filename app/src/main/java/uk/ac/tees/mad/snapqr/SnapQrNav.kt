@@ -9,6 +9,8 @@ import uk.ac.tees.mad.snapqr.ui.homescreen.HomeNav
 import uk.ac.tees.mad.snapqr.ui.homescreen.HomeScreen
 import uk.ac.tees.mad.snapqr.ui.scandetails.ScanDetailNav
 import uk.ac.tees.mad.snapqr.ui.scandetails.ScanDetailsScreen
+import uk.ac.tees.mad.snapqr.ui.scanhistory.ScanHistoryNav
+import uk.ac.tees.mad.snapqr.ui.scanhistory.ScanHistoryScreen
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanNav
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRScreen
 import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRViewModel
@@ -35,6 +37,10 @@ fun SnapQRNav() {
 
         composable(ScanDetailNav.route) {
             ScanDetailsScreen(navController = navController, scanQRViewModel = scanQRViewModel)
+        }
+
+        composable(ScanHistoryNav.route) {
+            ScanHistoryScreen(navController = navController, scanQRViewModel = scanQRViewModel)
         }
     }
 }
