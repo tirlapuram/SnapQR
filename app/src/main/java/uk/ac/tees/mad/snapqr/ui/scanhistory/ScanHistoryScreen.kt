@@ -130,7 +130,7 @@ fun ScanHistoryScreen(
                         ScanHistoryItem(
                             scan,
                             onClick = {
-                                scanQRViewModel.updateState(scan.qrType, scan.qrContent)
+                                scanQRViewModel.updateState(scan.qrType, scan.qrContent, false)
                                 navController.navigate(ScanDetailNav.route)
                             },
                             onDelete = {

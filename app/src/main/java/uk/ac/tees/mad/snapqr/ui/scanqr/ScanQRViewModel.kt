@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import uk.ac.tees.mad.snapqr.data.ScanHistory
 import uk.ac.tees.mad.snapqr.data.ScanHistoryDao
 import java.util.Date
@@ -37,17 +38,19 @@ class ScanQRViewModel @Inject constructor(
     private val _scans = MutableStateFlow<List<ScanHistory>>(emptyList())
     val scans = _scans.asStateFlow()
 
-    fun updateState(qrType: String, qrContent: String) {
+    fun updateState(qrType: String, qrContent: String, saveHistory: Boolean = true) {
         _state.update {
             it.copy(qrType = qrType, qrContent = qrContent)
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            val scanHistory = ScanHistory(
-                qrContent = qrContent,
-                qrType = qrType,
-                scanDate = Date()
-            )
-            dao.insertScan(scanHistory)
+        if (saveHistory) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val scanHistory = ScanHistory(
+                    qrContent = qrContent,
+                    qrType = qrType,
+                    scanDate = Date()
+                )
+                dao.insertScan(scanHistory)
+            }
         }
     }
 
@@ -72,16 +75,15 @@ class ScanQRViewModel @Inject constructor(
                     .collection("favorites")
                     .add(favoriteData)
                     .addOnSuccessListener {
-                        _isLoading.value = false
                         onSuccess()
                     }
                     .addOnFailureListener { exception ->
-                        _isLoading.value = false
                         onFailure(exception)
                     }
             } else {
                 onFailure(Exception("User not authenticated"))
             }
+            _isLoading.value = false
         }
     }
 
