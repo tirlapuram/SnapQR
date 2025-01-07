@@ -67,7 +67,7 @@ class ScanQRViewModel @Inject constructor(
                 val favoriteData = hashMapOf(
                     "qrType" to qrType,
                     "qrContent" to qrContent,
-                    "timestamp" to System.currentTimeMillis()
+                    "timestamp" to Date()
                 )
 
                 firestore.collection("users")
@@ -75,15 +75,16 @@ class ScanQRViewModel @Inject constructor(
                     .collection("favorites")
                     .add(favoriteData)
                     .addOnSuccessListener {
+                        _isLoading.value = false
                         onSuccess()
                     }
                     .addOnFailureListener { exception ->
+                        _isLoading.value = false
                         onFailure(exception)
                     }
             } else {
                 onFailure(Exception("User not authenticated"))
             }
-            _isLoading.value = false
         }
     }
 

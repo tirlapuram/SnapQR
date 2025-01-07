@@ -7,7 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import uk.ac.tees.mad.snapqr.data.ScanHistory
@@ -15,15 +14,19 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteViewModel @Inject constructor(): ViewModel() {
+class FavoriteViewModel @Inject constructor() : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
     private val _favorites = MutableStateFlow<List<ScanHistory>>(emptyList())
     val favorites = _favorites.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
     fun loadFavoriteScans() {
         viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.value = true
             val currentUser = auth.currentUser
             if (currentUser != null) {
                 firestore.collection("users")
@@ -40,6 +43,10 @@ class FavoriteViewModel @Inject constructor(): ViewModel() {
                             )
                         }
                         _favorites.value = favoriteScans
+                        _isLoading.value = false
+                    }.addOnFailureListener {
+                        _isLoading.value = false
+                        it.printStackTrace()
                     }
             }
         }
@@ -56,6 +63,10 @@ class FavoriteViewModel @Inject constructor(): ViewModel() {
                     .delete()
                     .addOnSuccessListener {
                         loadFavoriteScans()
+                        _isLoading.value = false
+                    }.addOnFailureListener {
+                        _isLoading.value = false
+                        it.printStackTrace()
                     }
             }
         }

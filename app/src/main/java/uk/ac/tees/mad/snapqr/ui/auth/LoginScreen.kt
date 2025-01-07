@@ -57,6 +57,7 @@ import kotlinx.coroutines.launch
 import uk.ac.tees.mad.snapqr.SnapNav
 import uk.ac.tees.mad.snapqr.ui.favoritescan.FavoriteNav
 import uk.ac.tees.mad.snapqr.ui.homescreen.HomeNav
+import uk.ac.tees.mad.snapqr.ui.scandetails.ScanDetailNav
 import uk.ac.tees.mad.snapqr.ui.theme.AppBlackColor
 import uk.ac.tees.mad.snapqr.ui.theme.AppBlueColor
 import uk.ac.tees.mad.snapqr.ui.theme.AppFocusColor
@@ -80,18 +81,7 @@ fun LoginScreen(
     var isLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Login") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
+    Scaffold { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -193,7 +183,7 @@ fun LoginScreen(
                                     Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT)
                                         .show()
                                     if (fromFavoriteScreen) {
-                                        navController.navigate(FavoriteNav.route) {
+                                        navController.navigate(ScanDetailNav.route) {
                                             popUpTo(FavoriteNav.route) {
                                                 inclusive = true
                                             }
@@ -251,7 +241,7 @@ fun LoginScreen(
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.clickable {
-
+                            navController.navigate("register?fromFavoriteScreen=true")
                         }
                     )
                 }

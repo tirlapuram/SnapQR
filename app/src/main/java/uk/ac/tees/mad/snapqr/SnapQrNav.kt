@@ -5,6 +5,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import uk.ac.tees.mad.snapqr.ui.auth.LoginNav
+import uk.ac.tees.mad.snapqr.ui.auth.LoginScreen
+import uk.ac.tees.mad.snapqr.ui.auth.RegisterNav
+import uk.ac.tees.mad.snapqr.ui.auth.RegisterScreen
+import uk.ac.tees.mad.snapqr.ui.favoritescan.FavoriteNav
+import uk.ac.tees.mad.snapqr.ui.favoritescan.FavoriteScansScreen
 import uk.ac.tees.mad.snapqr.ui.homescreen.HomeNav
 import uk.ac.tees.mad.snapqr.ui.homescreen.HomeScreen
 import uk.ac.tees.mad.snapqr.ui.scandetails.ScanDetailNav
@@ -41,6 +48,26 @@ fun SnapQRNav() {
 
         composable(ScanHistoryNav.route) {
             ScanHistoryScreen(navController = navController, scanQRViewModel = scanQRViewModel)
+        }
+        composable(
+            route = LoginNav.route,
+            arguments = listOf(navArgument("fromFavoriteScreen") { defaultValue = "false" })
+        ) { backStackEntry ->
+            val fromFavoriteScreen =
+                backStackEntry.arguments?.getString("fromFavoriteScreen") == "true"
+            LoginScreen(navController, fromFavoriteScreen)
+        }
+        composable(
+            route = RegisterNav.route,
+            arguments = listOf(navArgument("fromFavoriteScreen") { defaultValue = "false" })
+        ) { backStackEntry ->
+            val fromFavoriteScreen =
+                backStackEntry.arguments?.getString("fromFavoriteScreen") == "true"
+            RegisterScreen(navController, fromFavoriteScreen)
+        }
+
+        composable(FavoriteNav.route) {
+            FavoriteScansScreen(navController = navController)
         }
     }
 }

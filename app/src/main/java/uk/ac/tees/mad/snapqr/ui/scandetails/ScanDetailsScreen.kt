@@ -48,6 +48,7 @@ import uk.ac.tees.mad.snapqr.ui.scanqr.ScanQRViewModel
 object ScanDetailNav : SnapNav {
     override val route: String = "scan_details"
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScanDetailsScreen(
@@ -110,7 +111,6 @@ fun ScanDetailsScreen(
             Button(
                 onClick = {
                     if (isUserLoggedIn) {
-                        // If user is logged in, add to favorites
                         scanQRViewModel.addScanToFavorites(
                             qrType = qrType,
                             qrContent = qrContent,
@@ -121,7 +121,11 @@ fun ScanDetailsScreen(
                                             inclusive = true
                                         }
                                     }
-                                    Toast.makeText(context, "Added to favorites!", Toast.LENGTH_SHORT)
+                                    Toast.makeText(
+                                        context,
+                                        "Added to favorites!",
+                                        Toast.LENGTH_SHORT
+                                    )
                                         .show()
                                 }
 
@@ -137,7 +141,7 @@ fun ScanDetailsScreen(
                             }
                         )
                     } else {
-                        // Show login dialog if the user is not logged in
+
                         showLoginDialog = true
                     }
                 },
@@ -157,7 +161,7 @@ fun ScanDetailsScreen(
                 LoginDialog(
                     onDismiss = { showLoginDialog = false },
                     onLoginClick = {
-//                        navController.navigate("${AuthenticationNav.route}?fromFavoriteScreen=true")
+                        navController.navigate("login?fromFavoriteScreen=true")
                     }
                 )
             }
